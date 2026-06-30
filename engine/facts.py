@@ -47,3 +47,4 @@ class Blueprint(Fact):
     lr            = Field(str)
     init          = Field(str)
     notes         = Field(str)
+    notes_input   = Field(str)
