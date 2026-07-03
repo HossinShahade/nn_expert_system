@@ -18,6 +18,7 @@ class Problem(Fact):
     class_imbalance = Field(bool)
     interpretability= Field(bool)
     input_shape     = Field(str)   # e.g. 'small' | 'medium' | 'large'
+    outliers_expected  = Field(bool)
 
 
 class Architecture(Fact):
@@ -48,3 +49,4 @@ class Blueprint(Fact):
     init          = Field(str)
     notes         = Field(str)
     notes_input   = Field(str)
+    width         = Field(str)

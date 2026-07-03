@@ -80,3 +80,58 @@ def gpt_input(self):
 #----------------
 #transformer ts
 #Zhou et al. 2021 · arxiv:2012.07436
+
+@Rule(Architecture(family='transformer_ts'),salience=10)
+def transformer_ts_input(self):
+    self.declare(Blueprint(input_layer='linear projection of input features to mpodel_dim.add positional encoding'))
+
+
+#____________________________
+#autoencoder
+#Bank et al. 2023 · arxiv:2003.05991
+
+#small
+@Rule(Architecture(family='autoencoder'),Problem(input_shape='small'),salience=10)
+def auto_encoder_small_input(self):
+    self.declare(Blueprint(input_layer='linear(features->64)'))
+#medium
+@Rule(Architecture(family='autoencoder'),Problem(input_shape='medium'),salience=10)
+def autoencoder_medium_input(self):
+    self.declare(Blueprint(input_layer='linear(fetures->256)'))
+#large
+@Rule(Architecture(family='autoencoder'),Problem(input_shape='large'),salience=10)
+def autoencoder_large_input(self):
+    self.declare(Blueprint(input_layer='linear(features->512)'))
+#_________________________________--#
+#xgboost
+#Chen & Guestrin 2016 · arxiv:1603.02754
+@Rule(Architecture(family='xgboost'),salience=10)
+def xgboost_input(self):
+    self.declare(Blueprint(input_layer='RAw feature victor, no layer needed ',notes_input='apply standerd scaler befor fitting'))
+
+#_____________________________
+#logreg
+#Goodfellow et al. 2016
+@Rule(Architecture(family='logreg'),salience=10)
+def logreg_input(self):
+    self.declare(Blueprint(input_layer='RAw feature vector',notes_input='apply standerdscaler   logistic regresssion is sensitive to scale'))
+
+#_________
+#yolo
+#Redmon et al. 2016 · arxiv:1506.02640
+@Rule(Architecture(family='yolo'),salience=10)
+def yolo_input(self):
+    self.declare(Blueprint(input_layer='resize to 640X640 noermalize pixel value to [0,1]'))
+#_____________
+#wav2vec
+#Baevski et al. 2020 · arxiv:2006.11477
+@Rule(Architecture(family='wav2vec'),salience=10)
+def wav2vec_input(self):
+    self.declare(Blueprint(input_layer='raw waveform at 16KHz no preprocessing needed'))
+#-----------------------------
+#cnn 1D
+#LeCun et al. 1995
+@Rule(Architecture(family='cnn_1d'),salience=10)
+def cnn_1d_input(self):
+    self.declare(Blueprint(input_layer='raw waveform or MFCC features n_mfcc=40'))
+
