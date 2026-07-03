@@ -1,4 +1,4 @@
-from experta import Rule, NOT, OR, L, salience
+from experta import Rule, NOT, OR, L
 from engine.facts import Problem, Architecture, Blueprint
 
 
@@ -145,7 +145,9 @@ class ArchitectureRules:
     # Tree models beat deep learning on small tabular data
     @Rule(
         Problem(modality='tabular',
-                dataset_size=L('tiny') | L('small')),
+                dataset_size=L('tiny') | L('small'),
+                task=L('classify') | L('regress'),
+                interpretability=False),
         NOT(Architecture())
     )
     def af13_tabular_small(self):
@@ -160,6 +162,7 @@ class ArchitectureRules:
     @Rule(
         Problem(modality='tabular',
                 dataset_size=L('medium') | L('large'),
+                task=L('classify') | L('regress'),
                 interpretability=False),
         NOT(Architecture())
     )
@@ -170,8 +173,9 @@ class ArchitectureRules:
     # Source: Rudin 2019 - arxiv:1811.10154
     # Interpretability required — no black box models
     @Rule(
-        Problem(modality='tabular', interpretability=True),
-        NOT(Architecture())
+        Problem(modality='tabular', task=L('classify') | L('regress'), interpretability=True),
+        NOT(Architecture()),
+        salience=20
     )
     def af15_tabular_interpretable(self):
         self.declare(Architecture(family='logreg', is_pretrained=False))
@@ -279,7 +283,7 @@ class ArchitectureRules:
     @Rule(
         Problem(task='anomaly'),
         NOT(Architecture()),
-        salience=5
+        salience=-5
     )
     def af25_anomaly_fallback(self):
         self.declare(Architecture(family='autoencoder', is_pretrained=False))
@@ -363,7 +367,7 @@ class ArchitectureRules:
     # If nothing else matched, don't leave the user with a blank report
     @Rule(
         NOT(Architecture()),
-        salience=1
+        salience=-10
     )
     def af31_unknown_fallback(self):
         self.declare(Architecture(family='unknown', is_pretrained=False))

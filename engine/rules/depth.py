@@ -1,5 +1,5 @@
-from experta import Rule,L,salience
-from engine.facts import Problem,Architecture,Blueprint
+from experta import Rule, L
+from engine.facts import Problem, Architecture, Blueprint
 
 
 
@@ -16,11 +16,11 @@ class DepthRules:
     @Rule(Architecture(family='mlp'),Problem(dataset_size='medium'))
     def mlp_depth_medium(self):
         self.declare(Blueprint(hidden_layers = ' 3 to 4 hidden layers'))
-    @Rule(Architecture(family = 'mlp'),Problem(dataset_size='large'))
-    def mlp_depth_larg(self):
-        self.declare(Blueprint(hidden_layers='4 to 5 hidden layers'))    
-    
-    
+    @Rule(Architecture(family='mlp'), Problem(dataset_size='large'))
+    def mlp_depth_large(self):
+        self.declare(Blueprint(hidden_layers='4 to 5 hidden layers'))
+
+
     #------------------------------------=---
     # CNN scratch depth rules
     # Source: He et al. 2015 - arxiv:1512.03385
@@ -32,9 +32,9 @@ class DepthRules:
     @Rule (Architecture(family = 'cnn_scratch'),Problem(dataset_size='medium'))
     def cnn_depth_medium(self):
         self.declare(Blueprint(hidden_layers = '5 to 7 conv blocks'))
-    @Rule (Architecture(family ='cnn_scratch'),Problem(dataset_size='large'))
-    def cnn_depth_larg(self):
-        self.declare(Blueprint(hidden_layers ='8 to 12 conv blocks plus residuals'))
+    @Rule(Architecture(family='cnn_scratch'), Problem(dataset_size='large'))
+    def cnn_depth_large(self):
+        self.declare(Blueprint(hidden_layers='8 to 12 conv blocks plus residuals'))
     
     # pretained cnn
     #Kornblith et al. 2019 · arxiv:1805.08974
@@ -47,9 +47,9 @@ class DepthRules:
     #Gong et al. 2019 · arxiv:1904.11294
     @Rule(Architecture(family='conv_autoencoder'),Problem(dataset_size=L('tiny')|L('small')),salience=10)
     def conv_autoencoder_depth_small(self):
-        self.declare(Blueprint(hidden_layers='encoder 2 to 3 conv blocks -> bottel neck -> decoder mirror'),salience=10)
-    @Rule(Architecture(family='conv_autoencoder'),Problem(dataset_size=L('medium')|L('large')))
-    def conv_autoencoder_depth_larg (self):
+        self.declare(Blueprint(hidden_layers='encoder 2 to 3 conv blocks -> bottel neck -> decoder mirror'))
+    @Rule(Architecture(family='conv_autoencoder'), Problem(dataset_size=L('medium') | L('large')))
+    def conv_autoencoder_depth_large(self):
         self.declare(Blueprint(hidden_layers='encoder 4 to 5 conv blocks -> bottelneck _. decoder:mirror'))
     
     
@@ -64,8 +64,8 @@ class DepthRules:
     @Rule(Architecture(family='lstm'),Problem(dataset_size='medium'),salience=10)
     def lstm_depth_medium(self):
         self.declare(Blueprint(hidden_layers='2 stacked LSTM layers'))
-    @Rule (Architecture(family='lstm'),Problem(dataset_size ='large'),salience=10)
-    def lstm_depth_larg(self):
+    @Rule(Architecture(family='lstm'), Problem(dataset_size='large'), salience=10)
+    def lstm_depth_large(self):
         self.declare(Blueprint(hidden_layers='3 to 4 stacked lstm layers'))
     
     #------------------
@@ -75,6 +75,10 @@ class DepthRules:
     @Rule (Architecture(family='autoencoder'),salience=10)
     def autoencoder_depth(self):
         self.declare(Blueprint(hidden_layers='encode:3 to 4 layers -> Bottelneck -> decoder:mirror encoder'))
+
+    @Rule(Architecture(family='gan'), salience=10)
+    def gan_depth(self):
+        self.declare(Blueprint(hidden_layers='Generator: 4–5 layers, Discriminator: 3–4 layers'))
     
     #---------------
     #cpu
@@ -92,9 +96,9 @@ class DepthRules:
     @Rule(Architecture(family='lstm_autoencoder'),Problem(dataset_size=L('tiny')|L('small')),salience=10)
     def lstm_autoencoder_depth_small(self):
         self.declare(Blueprint(hidden_layers='encoder 1 lstm layer->bottelneck_>decoder mirror'))
-    @Rule(Architecture(family='lstm_autoencoder'),Problem(dataset_size=L('medium')|L('large')),salience=10)
-    def lstm_autoencoder_depth_larg(self):
-        self.declare(Blueprint(hiddenlayers='encoder 2 lstm layers -> bottel neck _. decoder mirror'))
+    @Rule(Architecture(family='lstm_autoencoder'), Problem(dataset_size=L('medium') | L('large')), salience=10)
+    def lstm_autoencoder_depth_large(self):
+        self.declare(Blueprint(hidden_layers='encoder 2 lstm layers -> bottel neck _. decoder mirror'))
     
     
     
@@ -132,7 +136,7 @@ class DepthRules:
     @Rule(Architecture(family='transformer_ts'),Problem(dataset_size='medium'),salience=10)
     def transformer_ts_depth_medium(self):
         self.declare(Blueprint(hidden_layers='4 encoder layers'))
-    @Rule(Architecture(family='transformer_ts'),Problem(dataset_size='larg'),salience=10)
+    @Rule(Architecture(family='transformer_ts'),Problem(dataset_size='large'),salience=10)
     def transformer_ts_depth_larg(self):
         self.declare(Blueprint(hidden_layers='6 encoder layyers'))
     #_____________________________________
@@ -167,8 +171,8 @@ class DepthRules:
     @Rule(Architecture(family='cnn_1d'),Problem(dataset_size= L('tiny')|L('small')),salience=10)
     def cnn_1d_depth_small(self):
         self.declare(Blueprint(hidden_layers='3 conv layers'))
-    @Rule(Architecture(family='cnn_1d'),Problem(dataset_size= L('medium')|L('larg')),salience=10)
-    def cnn_1_d_depth_larg(self):
+    @Rule(Architecture(family='cnn_1d'), Problem(dataset_size=L('medium') | L('large')), salience=10)
+    def cnn_1d_depth_large(self):
         self.declare(Blueprint(hidden_layers='4 to 5 conv layrs'))
     #___________________
     #realtime bottelneck
