@@ -4,12 +4,12 @@ init()
 
 def format_report(architecture, blueprints):
     """
-    Collects all Blueprint facts, merges their fields,
+    Collects all Blueprint facts, resolves conflicting values,
     and prints the final architecture spec.
     """
 
-    # Merge all Blueprint facts into one dict
-    # Later facts overwrite earlier ones for the same field
+    # Resolve each blueprint field to a single deterministic value.
+    # Later facts overwrite earlier ones for the same field.
     spec = {}
     notes = []
 
@@ -19,6 +19,7 @@ def format_report(architecture, blueprints):
             ('hidden_layers', 'hidden_layers'),
             ('width', 'width'),
             ('output_layer', 'output_layer'),
+            ('output_activation', 'output_activation'),
             ('activation', 'activation'),
             ('normalization', 'normalization'),
             ('dropout_rate', 'dropout_rate'),
@@ -30,15 +31,11 @@ def format_report(architecture, blueprints):
             ('init', 'init'),
         ]:
             val = bp.get(field)
-            if val is not None:
-                if key in spec:
-                    spec[key] = spec[key] + ' | ' + val
-                else:
-                    spec[key] = val
+            if val:
+                spec[key] = val
 
-        # Notes accumulate as a list
         note = bp.get('notes')
-        if note:
+        if note and note not in notes:
             notes.append(note)
 
     # Print
@@ -55,6 +52,7 @@ def format_report(architecture, blueprints):
         ("HIDDEN LAYERS",      "hidden_layers",     Fore.BLUE),
         ("WIDTH",              "width",             Fore.BLUE),
         ("OUTPUT LAYER",       "output_layer",      Fore.BLUE),
+        ("OUTPUT ACTIVATION",  "output_activation", Fore.GREEN),
         ("HIDDEN ACTIVATION",  "activation",        Fore.GREEN),
         ("NORMALIZATION",      "normalization",     Fore.GREEN),
         ("DROPOUT RATE",       "dropout_rate",      Fore.GREEN),
