@@ -1,5 +1,6 @@
 from colorama import Fore, Style, init
 init()
+from report.ascii_diagram import draw_network
 
 
 def format_report(architecture, blueprints):
@@ -37,7 +38,10 @@ def format_report(architecture, blueprints):
         note = bp.get('notes')
         if note and note not in notes:
             notes.append(note)
-
+    #diagram
+    print(f"\n{Fore.CYAN}{'-'*65}{Style.RESET_ALL}")
+    print(draw_network(architecture,spec))
+    print(f"{Fore.CYAN}{'-'*65}{Style.RESET_ALL}\n")
     # Print
     print(f"\n{Fore.CYAN}{'='*65}{Style.RESET_ALL}")
     print(f"{Fore.WHITE}  NEURAL NETWORK ARCHITECTURE RECOMMENDATION{Style.RESET_ALL}")
