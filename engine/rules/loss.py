@@ -8,31 +8,61 @@ class LossRules:
     # each output type hits one rule
     # source: PyTorch docs · pytorch.org
 
-    @Rule(Problem(output_type='binary', class_imbalance=False))
+    @Rule(
+        Problem(output_type='binary', class_imbalance=False),
+        NOT(Architecture(family=L('xgboost') | L('logreg') | L('autoencoder') |
+                          L('conv_autoencoder') | L('lstm_autoencoder') | L('gpt') |
+                          L('yolo') | L('transformer_ts') | L('wav2vec') | L('gan')))
+    )
     def l1_bce(self):
         self.declare(Blueprint(loss='BCEWithLogitsLoss'))
 
     # Source: King & Zeng 2001 · arxiv:cs/0011027
-    @Rule(Problem(output_type='binary', class_imbalance=True))
+    @Rule(
+        Problem(output_type='binary', class_imbalance=True),
+        NOT(Architecture(family=L('xgboost') | L('logreg') | L('autoencoder') |
+                          L('conv_autoencoder') | L('lstm_autoencoder') | L('gpt') |
+                          L('yolo') | L('transformer_ts') | L('wav2vec') | L('gan')))
+    )
     def l2_bce_weighted(self):
         self.declare(Blueprint(loss='BCEWithLogitsLoss with pos_weight = num_negatives / num_positives'))
 
-    @Rule(Problem(output_type='multiclass', class_imbalance=False))
+    @Rule(
+        Problem(output_type='multiclass', class_imbalance=False),
+        NOT(Architecture(family=L('xgboost') | L('logreg') | L('autoencoder') |
+                          L('conv_autoencoder') | L('lstm_autoencoder') | L('gpt') |
+                          L('yolo') | L('transformer_ts') | L('wav2vec') | L('gan')))
+    )
     def l3_crossentropy(self):
         self.declare(Blueprint(loss='CrossEntropyLoss'))
 
     #==============================================
     # focal loss for class imbalance
     # Source: Lin et al. 2017 · arxiv:1708.02002
-    @Rule(Problem(output_type='multiclass', class_imbalance=True))
+    @Rule(
+        Problem(output_type='multiclass', class_imbalance=True),
+        NOT(Architecture(family=L('xgboost') | L('logreg') | L('autoencoder') |
+                          L('conv_autoencoder') | L('lstm_autoencoder') | L('gpt') |
+                          L('yolo') | L('transformer_ts') | L('wav2vec') | L('gan')))
+    )
     def l4_focal(self):
         self.declare(Blueprint(loss='FocalLoss (gamma=2, alpha=0.25)'))
 
-    @Rule(Problem(output_type='continuous_single'))
+    @Rule(
+        Problem(output_type='continuous_single'),
+        NOT(Architecture(family=L('xgboost') | L('logreg') | L('autoencoder') |
+                          L('conv_autoencoder') | L('lstm_autoencoder') | L('gpt') |
+                          L('yolo') | L('transformer_ts') | L('wav2vec') | L('gan')))
+    )
     def l5_mse(self):
         self.declare(Blueprint(loss='MSELoss'))
 
-    @Rule(Problem(output_type='continuous_multi'))
+    @Rule(
+        Problem(output_type='continuous_multi'),
+        NOT(Architecture(family=L('xgboost') | L('logreg') | L('autoencoder') |
+                          L('conv_autoencoder') | L('lstm_autoencoder') | L('gpt') |
+                          L('yolo') | L('transformer_ts') | L('wav2vec') | L('gan')))
+    )
     def l6_mse_multi(self):
         self.declare(Blueprint(loss='MSELoss across all output dimensions'))
 

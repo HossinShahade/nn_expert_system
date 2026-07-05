@@ -6,19 +6,47 @@ class OutputLayerRules:
 
     # output types rules
     # PyTorch docs · pytorch.org
-    @Rule(Problem(output_type='binary'), salience=10)
+    @Rule(
+        Problem(output_type='binary'),
+        NOT(Architecture(family=L('cnn_scratch') | L('cnn_pretrained') | L('conv_autoencoder') |
+                          L('bert') | L('gpt') | L('autoencoder') | L('lstm_autoencoder') |
+                          L('lstm') | L('transformer_ts') | L('xgboost') | L('logreg') |
+                          L('yolo') | L('wav2vec') | L('cnn_1d') | L('gan'))),
+        salience=10
+    )
     def output_binary(self):
         self.declare(Blueprint(output_layer='Linear(last_hidden -> 1) no activation'))
 
-    @Rule(Problem(output_type='multiclass'), salience=10)
+    @Rule(
+        Problem(output_type='multiclass'),
+        NOT(Architecture(family=L('cnn_scratch') | L('cnn_pretrained') | L('conv_autoencoder') |
+                          L('bert') | L('gpt') | L('autoencoder') | L('lstm_autoencoder') |
+                          L('lstm') | L('transformer_ts') | L('xgboost') | L('logreg') |
+                          L('yolo') | L('wav2vec') | L('cnn_1d') | L('gan'))),
+        salience=10
+    )
     def output_multiclass(self):
         self.declare(Blueprint(output_layer='Linear(last_hidden -> num_classes) no activation'))
 
-    @Rule(Problem(output_type='continuous_single'), salience=10)
+    @Rule(
+        Problem(output_type='continuous_single'),
+        NOT(Architecture(family=L('cnn_scratch') | L('cnn_pretrained') | L('conv_autoencoder') |
+                          L('bert') | L('gpt') | L('autoencoder') | L('lstm_autoencoder') |
+                          L('lstm') | L('transformer_ts') | L('xgboost') | L('logreg') |
+                          L('yolo') | L('wav2vec') | L('cnn_1d') | L('gan'))),
+        salience=10
+    )
     def output_continuous_single(self):
         self.declare(Blueprint(output_layer='Linear(last_hidden -> 1) no activation'))
 
-    @Rule(Problem(output_type='continuous_multi'), salience=10)
+    @Rule(
+        Problem(output_type='continuous_multi'),
+        NOT(Architecture(family=L('cnn_scratch') | L('cnn_pretrained') | L('conv_autoencoder') |
+                          L('bert') | L('gpt') | L('autoencoder') | L('lstm_autoencoder') |
+                          L('lstm') | L('transformer_ts') | L('xgboost') | L('logreg') |
+                          L('yolo') | L('wav2vec') | L('cnn_1d') | L('gan'))),
+        salience=10
+    )
     def output_continuous_multi(self):
         self.declare(Blueprint(output_layer='Linear(last_hidden -> number of outputs) no activation'))
 

@@ -8,15 +8,24 @@ class DropoutRules:
     # based on dataset size, these fire for every family
     # source: Srivastava et al. 2014 · JMLR 15
 
-    @Rule(Problem(dataset_size=L('tiny') | L('small')))
+    @Rule(
+        Problem(dataset_size=L('tiny') | L('small')),
+        NOT(Architecture(family=L('bert') | L('gpt') | L('wav2vec') | L('xgboost') | L('logreg')))
+    )
     def dr1_rate_small(self):
         self.declare(Blueprint(dropout_rate='0.4 to 0.5'))
 
-    @Rule(Problem(dataset_size='medium'))
+    @Rule(
+        Problem(dataset_size='medium'),
+        NOT(Architecture(family=L('bert') | L('gpt') | L('wav2vec') | L('xgboost') | L('logreg')))
+    )
     def dr2_rate_medium(self):
         self.declare(Blueprint(dropout_rate='0.3'))
 
-    @Rule(Problem(dataset_size='large'))
+    @Rule(
+        Problem(dataset_size='large'),
+        NOT(Architecture(family=L('bert') | L('gpt') | L('wav2vec') | L('xgboost') | L('logreg')))
+    )
     def dr3_rate_large(self):
         self.declare(Blueprint(dropout_rate='0.1 to 0.2'))
 
